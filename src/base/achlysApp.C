@@ -3,6 +3,7 @@
 #include "AppFactory.h"
 #include "ModulesApp.h"
 #include "MooseSyntax.h"
+#include "ActionFactory.h"
 
 InputParameters
 achlysApp::validParams()
@@ -22,28 +23,18 @@ achlysApp::achlysApp(InputParameters parameters) : MooseApp(parameters)
 
 achlysApp::~achlysApp() {}
 
-// static void
-// associateSyntaxInner(Syntax & syntax, ActionFactory & /*action_factory*/)
-// {
-//   // Create the syntax
-//   registerSyntax("SimpleTrapAction", "Modules/AchlysTrap");
+static void
+associateSyntaxInner(Syntax & syntax, ActionFactory & /*action_factory*/)
+{
+   // Create the syntax
+   registerSyntax("FosterMcNabbTrapAction", "Modules/Achlys/FosterMcNabb/*");
+   registerSyntax("DiffusiveMaterialAction", "Modules/Achlys/DiffusiveMaterial/*");
 
-//   // add variables action
-//   registerTask("add_trap_variables", /*is_required=*/false);
-//   addTaskDependency("add_trap_variables", "add_variable");
+  // registerTask("add_extra_material", /*is_required=*/false);
+  // addTaskDependency("add_extra_material", "add_variable");
+  // addTaskDependency("add_master_action_material", "setup_function_complete");
 
-//   // add ICs action
-//   registerTask("add_trap_ics", /*is_required=*/false);
-//   addTaskDependency("add_trap_ics", "add_ic");
-
-//   // add Kernels action
-//   registerTask("add_trap_kernels", /*is_required=*/false);
-//   addTaskDependency("add_trap_kernels", "add_kernel");
-
-//   // add BCs actions
-//   registerTask("add_trap_bcs", /*is_required=*/false);
-//   addTaskDependency("add_trap_bcs", "add_bc");
-// }
+}
 
 void
 achlysApp::registerAll(Factory & f, ActionFactory & af, Syntax & syntax)
@@ -53,7 +44,7 @@ achlysApp::registerAll(Factory & f, ActionFactory & af, Syntax & syntax)
   Registry::registerActionsTo(af, {"achlysApp"});
 
   /* register custom execute flags, action syntax, etc. here */
-  // associateSyntaxInner(s, af);
+  associateSyntaxInner(syntax, af);
 }
 
 void
